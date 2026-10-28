@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Bel Otomatis – MA Al Ibrohimi</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.png" type="image/png">
+</head>
+<body>
+
+<!-- ── HEADER ───────────────────────────────────── -->
+<header>
+  <div class="header-top">
+    <img src="/logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+    <div class="school-name">
+      <h1>MA AL-IBROHIMI</h1>
+      <p>MANYAR · GRESIK</p>
+    </div>
+  </div>
+  <div class="header-status">
+    <span class="bell-icon">🔔</span>
+    <span class="title-bel">BEL OTOMATIS</span>
+    <span class="badge-online" id="badgeOnline">● ONLINE</span>
+  </div>
+</header>
+
+<!-- ── CLOCK CARD ───────────────────────────────── -->
+<section class="card clock-card">
+  <div class="clock-label">WAKTU SEKARANG</div>
+  <div class="clock-display">
+    <span id="jamTeks">--</span><span class="colon">:</span><span id="menitTeks">--</span>
+  </div>
+  <div class="detik-display" id="detikTeks">--</div>
+  <div class="clock-meta">
+    <div class="meta-item">
+      <div id="hariTeks" class="meta-val">---</div>
+      <div class="meta-lbl">HARI</div>
+    </div>
+    <div class="meta-item">
+      <div id="tanggalTeks" class="meta-val">-- ---</div>
+      <div class="meta-lbl">TANGGAL</div>
+    </div>
+    <div class="meta-item">
+      <div id="ipTeks" class="meta-val">---.---</div>
+      <div class="meta-lbl">IP DEVICE</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STAT CARDS ───────────────────────────────── -->
+<section class="stat-row">
+  <div class="stat-card">
+    <div class="stat-val" id="statJadwal">0</div>
+    <div class="stat-lbl">JADWAL</div>
+  </div>
+  <div class="stat-card accent">
+    <div class="stat-val" id="statSelesai">0</div>
+    <div class="stat-lbl">SELESAI</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val" id="statSisa">0</div>
+    <div class="stat-lbl">SISA HARI</div>
+  </div>
+</section>
+
+
+<!-- ── BEL MANUAL ───────────────────────────────── -->
+<section class="card">
+  <div class="section-title">🔔 BEL MANUAL</div>
+  <div class="bell-manual-wrap">
+    <button class="bell-btn" id="bellBtn"
+      onmousedown="startManual()" onmouseup="stopManual()"
+      ontouchstart="startManual()" ontouchend="stopManual()">
+      <span class="bell-icon-big">🔔</span>
+      <span class="bell-label" id="bellLabel">TAHAN BEL</span>
+    </button>
+  </div>
+  <div class="bell-hint">Lepas = bel berhenti</div>
+</section>
+
+<!-- ── SET JADWAL ───────────────────────────────── -->
+<section class="card">
+  <div class="section-title">⏰ SET JADWAL BEL</div>
+
+  <!-- Template -->
+  <div class="form-group">
+    <label class="form-label">TEMPLATE CEPAT</label>
+    <div class="template-row">
+      <button class="btn btn-tmpl" onclick="applyTemplate('KBM')">📚 KBM</button>
+      <button class="btn btn-tmpl" onclick="applyTemplate('ASAT')">📄 ASAT</button>
+      <button class="btn btn-tmpl" onclick="applyTemplate('MA')">🏫 MA</button>
+      <button class="btn btn-reset" onclick="resetJadwal()">🗑 Reset</button>
+    </div>
+  </div>
+
+  <!-- Jam Bel -->
+  <div class="form-group">
+    <label class="form-label">JAM BEL</label>
+    <div class="drum-picker-wrap">
+      <div class="drum-picker" id="drumJam"></div>
+      <span class="drum-colon">:</span>
+      <div class="drum-picker" id="drumMenit"></div>
+    </div>
+  </div>
+
+  <!-- Nama -->
+  <div class="form-group">
+    <label class="form-label">NAMA / KETERANGAN</label>
+    <input id="inpNama" class="inp" type="text" maxlength="30"
+           placeholder="cth: Masuk kelas, Istirahat..">
+  </div>
+
+  <!-- Durasi -->
+  <div class="form-group">
+    <label class="form-label">DURASI BEL</label>
+    <div class="dur-row" id="durRow">
+      <button class="dur-btn" onclick="setDur(1)">1s</button>
+      <button class="dur-btn" onclick="setDur(2)">2s</button>
+      <button class="dur-btn active" onclick="setDur(3)">3s</button>
+      <button class="dur-btn" onclick="setDur(5)">5s</button>
+      <button class="dur-btn" onclick="setDur(10)">10s</button>
+      <button class="dur-btn" onclick="setDur(30)">30s</button>
+    </div>
+  </div>
+
+  <!-- Hari -->
+  <div class="form-group">
+    <label class="form-label">HARI AKTIF</label>
+    <div class="hari-row" id="hariRow">
+      <button class="hari-btn active" data-i="0">Sen</button>
+      <button class="hari-btn active" data-i="1">Sel</button>
+      <button class="hari-btn active" data-i="2">Rab</button>
+      <button class="hari-btn active" data-i="3">Kam</button>
+      <button class="hari-btn active" data-i="4">Jum</button>
+      <button class="hari-btn" data-i="5">Sab</button>
+      <button class="hari-btn" data-i="6">Min</button>
+    </div>
+  </div>
+
+  <button class="btn btn-add" onclick="addJadwal()">+ TAMBAH JADWAL</button>
+</section>
+
+<!-- ── JADWAL AKTIF ──────────────────────────────── -->
+<section class="card">
+  <div class="section-title-row">
+    <span class="section-title">📋 JADWAL AKTIF</span>
+    <span class="jadwal-count" id="jadwalCount">0 / 50</span>
+  </div>
+  <div id="jadwalList">
+    <div class="empty-state">
+      <div class="empty-bell">🔔</div>
+      <div>Belum ada jadwal.</div>
+      <div>Tambah manual atau pilih template.</div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">2026 © MA Al-Ibrohimi | Created by Kusuma</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
